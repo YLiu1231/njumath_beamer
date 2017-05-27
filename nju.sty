@@ -1,0 +1,132 @@
+% Layout scheme for outer elements: split header and footer
+\useoutertheme{split}
+
+% Color scheme for outer elements: use background colors
+\usecolortheme{whale}
+
+% Layout scheme for inner elements: rounded elements
+\useinnertheme{rounded}
+
+% Color scheme for inner elements: use foreground colors
+\usecolortheme{orchid}
+
+% Itemize items: default (triangle), circle, square, ball
+\setbeamertemplate{itemize items}[circle]
+
+% Enumerate items: default, circle, square, ball
+\setbeamertemplate{enumerate items}[circle]
+
+% Outline: default, sections numbered, subsections numbered, circle, square, ball, ball unnumbered
+\setbeamertemplate{sections/subsections in toc}[default]
+
+% General blocks:
+\setbeamertemplate{blocks}[rounded][shadow=true]
+
+% Title page:
+\setbeamertemplate{title page}[default][colsep=-4bp,rounded=true]
+
+% Part page:
+\setbeamertemplate{part page}[default][colsep=-4bp,rounded=true]
+
+% Background
+\pgfdeclareimage[width=\paperwidth,height=0.95\paperheight]{bg}{njubackground}
+\setbeamertemplate{background}{\pgfuseimage{bg}}
+
+% Colors
+\usecolortheme[RGB={106,0,95}]{structure}
+
+\setbeamercolor{frametitle}{parent=subsection in head/foot}
+\setbeamercolor{frametitle right}{parent=subsection in head/foot}
+
+
+\pgfdeclarehorizontalshading[frametitle.bg,frametitle right.bg]{beamer@frametitleshade}{\paperheight}{%
+  color(0pt)=(frametitle.bg);
+  color(\paperwidth)=(frametitle right.bg)}
+
+\AtBeginDocument{
+  \pgfdeclareverticalshading{beamer@topshade}{\paperwidth}{%
+    color(0pt)=(bg);
+    color(4pt)=(black!50!bg)}
+}
+% footline: author | title | date | framenumber
+
+\defbeamertemplate*{footline}{nju theme}{%
+  \leavevmode%
+  \hbox{%
+  \begin{beamercolorbox}[wd=.2\paperwidth,ht=2.25ex,dp=1ex,center]{title in head/foot}%
+    \usebeamerfont{author in head/foot}\insertshortauthor
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.25\paperwidth,ht=2.25ex,dp=1ex,center]{title in head/foot}%
+    \usebeamerfont{author in head/foot}\insertshortdate
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.485\paperwidth,ht=2.25ex,dp=1ex,center]{title in head/foot}%
+   \usebeamerfont{author in head/foot}{南京大学数学系}
+  \end{beamercolorbox}%
+   \begin{beamercolorbox}[wd=0.065\paperwidth,ht=2.25ex,dp=1ex,right]{title in head/foot}%
+    \insertframenumber{} / \inserttotalframenumber\hspace*{2ex}
+  \end{beamercolorbox}}%
+  \vskip0pt%
+}
+
+\defbeamertemplate*{headline}{nju theme}{%
+  \leavevmode%
+  \@tempdimb=6.4375ex%
+    \pgfdeclareimage[height=.95\@tempdimb]{logo}{njulogo.pdf}%
+    \pgfdeclareimage[height=1.\@tempdimb]{title_logo}{njuname.png}%
+    \pgfdeclareimage[height=1.\@tempdimb]{math_logo}{njumath.png}%
+  \logo{\pgfuseimage{logo}}%
+  \ifdim\@tempdimb>0pt%
+    \advance\@tempdimb by 1.125ex%
+     \begin{beamercolorbox}[wd=.15\paperwidth,ht=\@tempdimb,center]{subsection in head/foot}%
+      \vbox to\@tempdimb{\vfil\pgfuseimage{math_logo}\vfil}%
+    \end{beamercolorbox}%
+    \begin{beamercolorbox}[wd=.65\paperwidth,ht=\@tempdimb]{subsection in head/foot}%
+      \vbox to\@tempdimb{\vfil\insertsectionnavigationhorizontal{.5\textwidth}{\hskip0pt 
+      plus1filll}{}\vfil}
+    \end{beamercolorbox}%
+    \begin{beamercolorbox}[wd=.135\paperwidth,ht=\@tempdimb,center]{subsection in head/foot}%
+      \vbox to\@tempdimb{\vfil\pgfuseimage{title_logo}\vfil}%
+    \end{beamercolorbox}%
+    \begin{beamercolorbox}[wd=.065\paperwidth,ht=\@tempdimb,center]{subsection in head/foot}%
+      \vbox to\@tempdimb{\vfil\insertlogo\vfil\vfil}%
+    \end{beamercolorbox}%
+  \fi%
+}
+
+\defbeamertemplate*{frametitle}{nju theme}{%
+  \nointerlineskip%
+  \hbox{\leavevmode
+    \advance\beamer@leftmargin by -12bp%
+    \advance\beamer@rightmargin by -12bp %
+    \beamer@tempdim=\textwidth%
+    \advance\beamer@tempdim by \beamer@leftmargin%
+    \advance\beamer@tempdim by \beamer@rightmargin%
+    \hskip-\Gm@lmargin\hbox{%
+      \setbox\beamer@tempbox=\hbox{\begin{minipage}[b]{\paperwidth}%
+          \vbox{}\vskip-.75ex%
+          \leftskip0.3cm%
+          \rightskip= 0pt plus1fil \leavevmode
+          \insertframetitle%
+          \ifx\insertframesubtitle\@empty%
+            \strut\par%
+          \else
+            \par{\usebeamerfont*{framesubtitle}{\usebeamercolor[bg]{framesubtitle}\insertframesubtitle}\strut\par}%
+          \fi%
+          \nointerlineskip
+          \vbox{}%
+          \end{minipage}}%
+      \beamer@tempdim=\ht\beamer@tempbox%
+      \advance\beamer@tempdim by 2pt%
+      % 控制副标题在条形区域的位置，越大越靠左
+      \begin{pgfpicture}{0mm}{0pt}{\paperwidth}{\beamer@tempdim}
+        \usebeamercolor{frametitle right}
+        \pgfpathrectangle{\pgfpointorigin}{\pgfpoint{\paperwidth}{\beamer@tempdim}}
+        \pgfusepath{clip}
+        \pgftext[left,base]{\pgfuseshading{beamer@frametitleshade}}
+      \end{pgfpicture}
+      \hskip-\paperwidth%
+      \box\beamer@tempbox%
+    }%
+    \hskip-\Gm@rmargin%
+  }%
+}
